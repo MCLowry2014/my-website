@@ -1,4 +1,231 @@
+.restart-btn-container {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 10px 0;
+}
+#leaderboard-2048-container {
+  max-width: 320px;
+  margin: 32px auto 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(57,68,188,0.08);
+  padding: 18px 20px 10px 20px;
+}
+#leaderboard-2048 {
+  padding-left: 20px;
+  margin: 0;
+  color: #3944BC;
+  font-size: 1.05em;
+}
+#leaderboard-2048 li {
+  margin-bottom: 4px;
+}
+.restart-btn {
+  display: inline-block;
+  background: #3944BC;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 10px 0 18px 0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.restart-btn:hover {
+  background: #FFB200;
+  color: #222831;
+}
+#game-2048 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 32px 0 24px 0;
+}
+.grid-2048 {
+  display: grid;
+  grid-template-columns: repeat(4, 60px);
+  grid-template-rows: repeat(4, 60px);
+  gap: 8px;
+  background: #bfc9e6;
+  border-radius: 10px;
+  padding: 10px;
+}
+.tile-2048 {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  font-weight: bold;
+  border-radius: 6px;
+  background: #e3e9fc;
+  color: #3944BC;
+  transition: background 0.2s, color 0.2s;
+}
+.tile-2048.t2 { background: #e3e9fc; color: #3944BC; }
+.tile-2048.t4 { background: #d0e6fa; color: #3944BC; }
+.tile-2048.t8 { background: #b4d2fa; color: #fff; }
+.tile-2048.t16 { background: #97b7fa; color: #fff; }
+.tile-2048.t32 { background: #7a9dfa; color: #fff; }
+.tile-2048.t64 { background: #5e83fa; color: #fff; }
+.tile-2048.t128 { background: #3944BC; color: #fff; }
+.tile-2048.t256 { background: #FFB200; color: #fff; }
+.tile-2048.t512 { background: #ff8c00; color: #fff; }
+.tile-2048.t1024 { background: #ff5e00; color: #fff; }
+.tile-2048.t2048 { background: #ffd700; color: #3944BC; }
+#score-2048 {
+  font-weight: bold;
+  color: #3944BC;
+  margin-bottom: 10px;
+}
+#leaderboard-container {
+  max-width: 320px;
+  margin: 32px auto 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(57,68,188,0.08);
+  padding: 18px 20px 10px 20px;
+}
+#leaderboard {
+  padding-left: 20px;
+  margin: 0;
+  color: #3944BC;
+  font-size: 1.05em;
+}
+#leaderboard li {
+  margin-bottom: 4px;
+}
+.memory-game {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-template-rows: repeat(2, 100px);
+  gap: 18px;
+  justify-content: center;
+  margin: 40px 0 24px 0;
+}
+.memory-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(57,68,188,0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  cursor: pointer;
+  user-select: none;
+  border: 2px solid #3944BC;
+  transition: box-shadow 0.2s, border 0.2s;
+  position: relative;
+}
+.memory-card.matched {
+  background: #e3e9fc;
+  border-color: #FFB200;
+  cursor: default;
+}
+.memory-card span.hidden {
+  opacity: 0;
+}
+.memory-card span {
+  transition: opacity 0.2s;
+}
+#memory-message {
+  text-align: center;
+  font-weight: bold;
+  color: #3944BC;
+  min-height: 1.5em;
+}
+/* Grid overlay for background pattern */
+.grid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="none"/><path d="M40 0H0V40" stroke="%233944BC" stroke-width="1.2" stroke-opacity="0.25"/></svg>');
+  background-size: 40px 40px;
+  background-repeat: repeat;
+  opacity: 1;
+}
+.tabs-bar a:hover, .tabs-bar a:focus {
+  background: #FFB200;
+  color: #222831;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #3944BC;
+  margin-top: 0;
+}
+
+a {
+  color: #3944BC;
+  text-decoration: underline;
+}
+a:hover {
+  color: #FFB200;
+}
+
+main, .content {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  padding: 32px 24px;
+  max-width: 800px;
+  margin: 32px auto;
+}
+/* Container for centering and spacing the tab bar */
+.tabs-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 100px;
+  margin-bottom: 40px;
+}
+
 body {
   font-family: Arial, sans-serif;
-  padding: 20px;
+  padding: 0;
+  background-color: #F5F6FA;
+  background-image:
+    radial-gradient(circle at 50% 40%, #e3e9fc 0%, #3944BC 100%),
+    url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="none"/><path d="M40 0H0V40" stroke="%233944BC" stroke-width="1.2" stroke-opacity="0.25"/></svg>');
+  background-size: cover, 40px 40px;
+  background-repeat: no-repeat, repeat;
+  min-height: 100vh;
+  margin: 0;
+  color: #222831;
+}
+
+  
+.tabs-bar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  background: #3944BC;
+  padding: 16px 32px;
+  border-radius: 14px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  max-width: 650px;
+  border: 3px solid #fff;
+  outline: 2px solid #5767d9;
+  outline-offset: 2px;
+}
+.tabs-bar a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 5px;
+  transition: background 0.2s, color 0.2s;
+  background: transparent;
+}
+  
+.tabs-bar a:hover, .tabs-bar a:focus {
+  background: #FFB200;
+  color: #222831;
 }

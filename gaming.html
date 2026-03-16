@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Gaming</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="tabs-bar-container">
+    <nav class="tabs-bar">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="gaming.html">Gaming</a>
+      <a href="videos.html">Videos</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+  <h1>Games</h1>
+  <label for="game-select" style="font-weight:bold;">Choose a game:</label>
+  <select id="game-select">
+    <option value="memory">Memory Game</option>
+    <option value="2048">2048</option>
+    <!-- Future games can be added here -->
+  </select>
+  <div id="game-container">
+    <!-- Content is dynamically injected by JS for each game -->
+  </div>
+  <script src="js/leaderboard.js"></script>
+  <script src="js/leaderboard-2048.js"></script>
+  <script src="js/game-2048.js"></script>
+  <script src="js/games.js"></script>
+</body>
+</html>
