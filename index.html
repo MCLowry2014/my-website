@@ -77,6 +77,20 @@
       <button id="puzzle-reset" class="puzzle-btn puzzle-reset">Reset</button>
       <p id="puzzle-result" class="puzzle-result" aria-live="polite"></p>
     </div>
+
+    <div class="puzzle-panel">
+      <h3>Element Fact Cards</h3>
+      <p id="fact-question" class="fact-question">Loading fact...</p>
+      <div class="fact-input-row">
+        <label for="fact-answer">Element symbol:</label>
+        <input id="fact-answer" class="fact-answer" placeholder="e.g. O" maxlength="2" />
+      </div>
+      <div style="margin-top: 8px;">
+        <button id="fact-check" class="puzzle-btn">Check Fact</button>
+        <button id="fact-next" class="puzzle-btn puzzle-reset">Next Fact</button>
+      </div>
+      <p id="fact-result" class="puzzle-result" aria-live="polite"></p>
+    </div>
   </section>
 
   <script src="js/script.js"></script>

@@ -137,20 +137,6 @@
   color: #3944BC;
   min-height: 1.5em;
 }
-/* Grid overlay for background pattern */
-.grid-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-  background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="none"/><path d="M40 0H0V40" stroke="%233944BC" stroke-width="1.2" stroke-opacity="0.25"/></svg>');
-  background-size: 40px 40px;
-  background-repeat: repeat;
-  opacity: 1;
-}
 .tabs-bar a:hover, .tabs-bar a:focus {
   background: #FFB200;
   color: #222831;
@@ -190,11 +176,9 @@ body {
   font-family: Arial, sans-serif;
   padding: 0;
   background-color: #F5F6FA;
-  background-image:
-    radial-gradient(circle at 50% 40%, #e3e9fc 0%, #3944BC 100%),
-    url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="40" height="40" fill="none"/><path d="M40 0H0V40" stroke="%233944BC" stroke-width="1.2" stroke-opacity="0.25"/></svg>');
-  background-size: cover, 40px 40px;
-  background-repeat: no-repeat, repeat;
+  background-image: radial-gradient(circle at 50% 40%, #e3e9fc 0%, #3944BC 100%);
+  background-size: cover;
+  background-repeat: no-repeat;
   min-height: 100vh;
   margin: 0;
   color: #222831;
@@ -245,4 +229,7 @@ body {
 .puzzle-btn:hover { background: #FFB200; color: #222831; }
 .puzzle-reset { background: #2e7d32; }
 .puzzle-result { margin-top: 10px; font-weight: bold; }
+.fact-question { font-weight: 600; margin: 0; }
+.fact-input-row { margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+.fact-answer { border-radius: 6px; border: 1px solid #4f5eaa; padding: 6px 8px; font-size: 1rem; width: 70px; text-transform: capitalize; }
 
