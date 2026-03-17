@@ -12,6 +12,7 @@
   <div class="tabs-bar-container">
     <nav class="tabs-bar">
       <a href="index.html">Home</a>
+      <a href="#education">Education</a>
       <a href="projects.html">Projects</a>
       <a href="gaming.html">Gaming</a>
       <a href="videos.html">Videos</a>
@@ -21,6 +22,62 @@
 
   <h1>Hello World!</h1>
   <p>This is my first website.</p>
+
+  <section id="education" class="education-section">
+    <h2>Education</h2>
+    <div class="education-grid">
+      <article class="education-subject">
+        <h3>Math</h3>
+        <ul>
+          <li>Games</li>
+          <li>Quizzes</li>
+          <li>Practice Sheets</li>
+        </ul>
+      </article>
+      <article class="education-subject">
+        <h3>Science</h3>
+        <ul>
+          <li>Games</li>
+          <li>Experiments</li>
+          <li>Facts & Videos</li>
+        </ul>
+        <p><strong>Periodic Table Puzzle</strong>: Match elements to symbols</p>
+      </article>
+      <article class="education-subject">
+        <h3>History</h3>
+        <ul>
+          <li>Timelines</li>
+          <li>Guess-the-Date Games</li>
+          <li>Biographies</li>
+        </ul>
+      </article>
+      <article class="education-subject">
+        <h3>English / Reading</h3>
+        <ul>
+          <li>Word Games</li>
+          <li>Grammar Challenges</li>
+          <li>Reading Practice</li>
+        </ul>
+      </article>
+      <article class="education-subject">
+        <h3>Coding / Tech</h3>
+        <ul>
+          <li>Logic Games</li>
+          <li>Mini Coding Puzzles</li>
+          <li>Tutorials</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="puzzle-panel">
+      <h3>Periodic Table Puzzle</h3>
+      <p>Select the correct symbol for each element and click "Check Answers".</p>
+      <div id="puzzle-questions" class="puzzle-questions"></div>
+      <button id="puzzle-check" class="puzzle-btn">Check Answers</button>
+      <button id="puzzle-reset" class="puzzle-btn puzzle-reset">Reset</button>
+      <p id="puzzle-result" class="puzzle-result" aria-live="polite"></p>
+    </div>
+  </section>
 
   <script src="js/script.js"></script>
 </body>
