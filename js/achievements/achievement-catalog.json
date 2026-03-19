@@ -1,0 +1,374 @@
+{
+  "version": "1.0.0",
+  "program": {
+    "name": "Achievement Points",
+    "shortName": "AP",
+    "philosophy": "Xbox-style one-time unlocks with permanent AP totals."
+  },
+  "rules": {
+    "oneTimeOnly": true,
+    "apNeverDecreases": true,
+    "difficultyScale": [
+      { "key": "INTRO", "label": "Intro", "points": 10 },
+      { "key": "EASY", "label": "Easy", "points": 20 },
+      { "key": "MEDIUM", "label": "Medium", "points": 40 },
+      { "key": "HARD", "label": "Hard", "points": 75 },
+      { "key": "EXPERT", "label": "Expert", "points": 125 },
+      { "key": "LEGENDARY", "label": "Legendary", "points": 200 },
+      { "key": "MYTHIC", "label": "Mythic", "points": 0 }
+    ]
+  },
+  "targets": {
+    "topicsPerSubject": {
+      "math": 3,
+      "science": 3,
+      "history": 3,
+      "english": 3,
+      "coding": 3
+    },
+    "totalTopics": 15,
+    "requiredGames": ["memory", "2048"]
+  },
+  "achievements": [
+    {
+      "id": "FIRST_UNLOCK",
+      "name": "First Unlock",
+      "description": "Unlock your first achievement.",
+      "category": "platform",
+      "difficulty": "INTRO",
+      "points": 10,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "platform.eventsProcessed", "value": 1 }
+    },
+    {
+      "id": "FIRST_TOPIC",
+      "name": "First Steps",
+      "description": "Complete your first education topic.",
+      "category": "education",
+      "difficulty": "EASY",
+      "points": 20,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "education.topicsCompleted", "value": 1 }
+    },
+    {
+      "id": "TOPIC_MASTER_80",
+      "name": "Mastery Start",
+      "description": "Score 80% or higher on any topic quiz.",
+      "category": "education",
+      "difficulty": "EASY",
+      "points": 20,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "education.quizScores80OrHigher", "value": 1 }
+    },
+    {
+      "id": "TOPIC_PERFECT",
+      "name": "Perfect Lesson",
+      "description": "Score 100% on any topic quiz.",
+      "category": "education",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "education.quizPerfectCount", "value": 1 }
+    },
+    {
+      "id": "QUIZ_STREAK_3",
+      "name": "Three In A Row",
+      "description": "Get 80%+ on 3 quizzes in a row.",
+      "category": "education",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "education.bestQuiz80Streak", "value": 3 }
+    },
+    {
+      "id": "QUIZ_STREAK_10",
+      "name": "Quiz Machine",
+      "description": "Get 80%+ on 10 quizzes in a row.",
+      "category": "education",
+      "difficulty": "EXPERT",
+      "points": 125,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "education.bestQuiz80Streak", "value": 10 }
+    },
+    {
+      "id": "WEEKLY_LEARNER",
+      "name": "Weekly Learner",
+      "description": "Complete at least one topic on 7 different days.",
+      "category": "education",
+      "difficulty": "EXPERT",
+      "points": 125,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "education.uniqueLearningDays", "value": 7 }
+    },
+    {
+      "id": "MATH_PATH",
+      "name": "Math Path Complete",
+      "description": "Complete all Math topics.",
+      "category": "education",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "subject_topics_completed", "subject": "math" }
+    },
+    {
+      "id": "SCIENCE_PATH",
+      "name": "Science Path Complete",
+      "description": "Complete all Science topics.",
+      "category": "education",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "subject_topics_completed", "subject": "science" }
+    },
+    {
+      "id": "HISTORY_PATH",
+      "name": "History Path Complete",
+      "description": "Complete all History topics.",
+      "category": "education",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "subject_topics_completed", "subject": "history" }
+    },
+    {
+      "id": "ENGLISH_PATH",
+      "name": "English Path Complete",
+      "description": "Complete all English topics.",
+      "category": "education",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "subject_topics_completed", "subject": "english" }
+    },
+    {
+      "id": "CODING_PATH",
+      "name": "Coding Path Complete",
+      "description": "Complete all Coding topics.",
+      "category": "education",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "subject_topics_completed", "subject": "coding" }
+    },
+    {
+      "id": "ALL_SUBJECTS",
+      "name": "Curriculum Conqueror",
+      "description": "Complete every topic in all subjects.",
+      "category": "education",
+      "difficulty": "LEGENDARY",
+      "points": 200,
+      "oneTime": true,
+      "criteria": { "rule": "all_topics_completed" }
+    },
+    {
+      "id": "MEMORY_FIRST_WIN",
+      "name": "Match Maker",
+      "description": "Win your first memory game.",
+      "category": "gaming",
+      "difficulty": "EASY",
+      "points": 20,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "games.memoryWins", "value": 1 }
+    },
+    {
+      "id": "MEMORY_HOT_STREAK",
+      "name": "Memory Hot Streak",
+      "description": "Win 3 memory games in a row.",
+      "category": "gaming",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "games.bestMemoryWinStreak", "value": 3 }
+    },
+    {
+      "id": "TILE_128",
+      "name": "Rising Tile",
+      "description": "Reach 128 in 2048.",
+      "category": "gaming",
+      "difficulty": "EASY",
+      "points": 20,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "games.max2048Tile", "value": 128 }
+    },
+    {
+      "id": "TILE_512",
+      "name": "Tile Tactician",
+      "description": "Reach 512 in 2048.",
+      "category": "gaming",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "games.max2048Tile", "value": 512 }
+    },
+    {
+      "id": "TILE_1024",
+      "name": "Tile Elite",
+      "description": "Reach 1024 in 2048.",
+      "category": "gaming",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "games.max2048Tile", "value": 1024 }
+    },
+    {
+      "id": "TILE_2048",
+      "name": "2048 Champion",
+      "description": "Reach 2048 in 2048.",
+      "category": "gaming",
+      "difficulty": "LEGENDARY",
+      "points": 200,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "games.max2048Tile", "value": 2048 }
+    },
+    {
+      "id": "ALL_GAMES_PLAYED",
+      "name": "Arcade Explorer",
+      "description": "Play each game at least once.",
+      "category": "gaming",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "all_games_played" }
+    },
+    {
+      "id": "WATCHLIST_FIRST_ADD",
+      "name": "Catalog Starter",
+      "description": "Add your first watchlist item.",
+      "category": "watchlist",
+      "difficulty": "INTRO",
+      "points": 10,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "watchlist.addedCount", "value": 1 }
+    },
+    {
+      "id": "WATCHLIST_IMPORT_FIRST",
+      "name": "Bulk Builder",
+      "description": "Complete your first CSV import.",
+      "category": "watchlist",
+      "difficulty": "EASY",
+      "points": 20,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "watchlist.importCount", "value": 1 }
+    },
+    {
+      "id": "WATCHLIST_IMPORT_25",
+      "name": "Data Drop",
+      "description": "Import 25 or more items in one CSV upload.",
+      "category": "watchlist",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "watchlist.maxImportSize", "value": 25 }
+    },
+    {
+      "id": "WATCHLIST_ORGANIZER",
+      "name": "Organizer",
+      "description": "Edit 10 watchlist items.",
+      "category": "watchlist",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "watchlist.editedCount", "value": 10 }
+    },
+    {
+      "id": "WATCHLIST_CURATOR",
+      "name": "Curator",
+      "description": "Export your watchlist.",
+      "category": "watchlist",
+      "difficulty": "EASY",
+      "points": 20,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "watchlist.exportCount", "value": 1 }
+    },
+    {
+      "id": "WATCHLIST_100",
+      "name": "Centurion Catalog",
+      "description": "Reach 100 watchlist entries.",
+      "category": "watchlist",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "watchlist.maxTotalEntries", "value": 100 }
+    },
+    {
+      "id": "PROFILE_COMPLETE",
+      "name": "Ready To Roll",
+      "description": "Complete your profile setup.",
+      "category": "platform",
+      "difficulty": "EASY",
+      "points": 20,
+      "oneTime": true,
+      "criteria": { "rule": "stat_equals", "stat": "platform.profileCompleted", "value": true }
+    },
+    {
+      "id": "LOGIN_STREAK_7",
+      "name": "Consistent Week",
+      "description": "Reach a 7-day login streak.",
+      "category": "platform",
+      "difficulty": "HARD",
+      "points": 75,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "platform.bestLoginStreak", "value": 7 }
+    },
+    {
+      "id": "LOGIN_STREAK_30",
+      "name": "Monthly Momentum",
+      "description": "Reach a 30-day login streak.",
+      "category": "platform",
+      "difficulty": "LEGENDARY",
+      "points": 200,
+      "oneTime": true,
+      "criteria": { "rule": "stat_at_least", "stat": "platform.bestLoginStreak", "value": 30 }
+    },
+    {
+      "id": "AP_500",
+      "name": "Point Earner",
+      "description": "Reach 500 Achievement Points.",
+      "category": "platform",
+      "difficulty": "MEDIUM",
+      "points": 40,
+      "oneTime": true,
+      "criteria": { "rule": "ap_at_least", "value": 500 }
+    },
+    {
+      "id": "AP_2000",
+      "name": "Point Veteran",
+      "description": "Reach 2000 Achievement Points.",
+      "category": "platform",
+      "difficulty": "EXPERT",
+      "points": 125,
+      "oneTime": true,
+      "criteria": { "rule": "ap_at_least", "value": 2000 }
+    },
+    {
+      "id": "AP_5000",
+      "name": "Point Legend",
+      "description": "Reach 5000 Achievement Points.",
+      "category": "platform",
+      "difficulty": "LEGENDARY",
+      "points": 200,
+      "oneTime": true,
+      "criteria": { "rule": "ap_at_least", "value": 5000 }
+    },
+    {
+      "id": "MYTHIC_NO_MISSES",
+      "name": "Mythic: No-Miss Scholar",
+      "description": "Complete all topics while keeping a perfect quiz record for every topic.",
+      "category": "education",
+      "difficulty": "MYTHIC",
+      "points": 0,
+      "oneTime": true,
+      "criteria": { "rule": "mythic_perfect_all_topics" }
+    },
+    {
+      "id": "MYTHIC_DAY_ONE",
+      "name": "Mythic: Day One Conqueror",
+      "description": "Complete all topics and reach 2048 in the same UTC day.",
+      "category": "platform",
+      "difficulty": "MYTHIC",
+      "points": 0,
+      "oneTime": true,
+      "criteria": { "rule": "mythic_all_topics_and_2048_same_day" }
+    }
+  ]
+}

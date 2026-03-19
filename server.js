@@ -30,7 +30,31 @@ db.serialize(() => {
     CREATE UNIQUE INDEX IF NOT EXISTS unique_watchlist_item
     ON watchlist_items (LOWER(title), LOWER(type), IFNULL(year, -1))
   `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS education_progress (
+      user_id TEXT NOT NULL,
+      topic_key TEXT NOT NULL,
+      completed_at TEXT,
+      best_score INTEGER,
+      last_score INTEGER,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (user_id, topic_key)
+    )
+  `);
 });
+
+function normalizeUserId(value) {
+  if (typeof value !== "string") return "guest";
+  const trimmed = value.trim();
+  return trimmed || "guest";
+}
+
+function normalizeScore(value) {
+  const num = Number(value);
+  if (Number.isNaN(num)) return 0;
+  return Math.max(0, Math.min(100, Math.round(num)));
+}
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -266,6 +290,148 @@ app.delete("/api/watchlist/:id", (req, res) => {
       return res.status(404).json({ error: "Item not found." });
     }
     return res.status(204).send();
+  });
+});
+
+app.get("/api/education/progress", (req, res) => {
+  const userId = normalizeUserId(req.query.userId);
+
+  db.all(
+    `SELECT topic_key, completed_at, best_score, last_score, updated_at
+     FROM education_progress
+     WHERE user_id = ?`,
+    [userId],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to load education progress." });
+      }
+
+      const completed = {};
+      const quizScores = {};
+
+      rows.forEach((row) => {
+        if (row.completed_at) {
+          completed[row.topic_key] = row.completed_at;
+        }
+
+        if (row.best_score !== null || row.last_score !== null) {
+          quizScores[row.topic_key] = {
+            best: normalizeScore(row.best_score),
+            last: normalizeScore(row.last_score),
+            updatedAt: row.updated_at || null
+          };
+        }
+      });
+
+      return res.json({
+        version: 1,
+        user: userId,
+        completed,
+        quizScores
+      });
+    }
+  );
+});
+
+app.post("/api/education/progress", (req, res) => {
+  const userId = normalizeUserId(req.body?.userId || req.query.userId);
+  const progress = req.body?.progress;
+
+  if (!progress || typeof progress !== "object") {
+    return res.status(400).json({ error: "Body must include a progress object." });
+  }
+
+  const completed = progress.completed && typeof progress.completed === "object" ? progress.completed : {};
+  const quizScores = progress.quizScores && typeof progress.quizScores === "object" ? progress.quizScores : {};
+
+  const topicKeys = new Set([...Object.keys(completed), ...Object.keys(quizScores)]);
+
+  db.serialize(() => {
+    db.run("BEGIN TRANSACTION");
+
+    db.run("DELETE FROM education_progress WHERE user_id = ?", [userId], (deleteErr) => {
+      if (deleteErr) {
+        return db.run("ROLLBACK", () => {
+          res.status(500).json({ error: "Failed to save education progress." });
+        });
+      }
+
+      if (topicKeys.size === 0) {
+        return db.run("COMMIT", (commitErr) => {
+          if (commitErr) {
+            return res.status(500).json({ error: "Failed to save education progress." });
+          }
+          return res.json({ ok: true, user: userId, saved: 0 });
+        });
+      }
+
+      const stmt = db.prepare(
+        `INSERT INTO education_progress (user_id, topic_key, completed_at, best_score, last_score, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?)`
+      );
+
+      let index = 0;
+      const keys = Array.from(topicKeys);
+      let hadError = false;
+
+      function finalizeAndCommit() {
+        stmt.finalize((finalizeErr) => {
+          if (finalizeErr && !hadError) {
+            hadError = true;
+            return db.run("ROLLBACK", () => {
+              res.status(500).json({ error: "Failed to save education progress." });
+            });
+          }
+
+          if (hadError) return;
+
+          db.run("COMMIT", (commitErr) => {
+            if (commitErr) {
+              return res.status(500).json({ error: "Failed to save education progress." });
+            }
+            return res.json({ ok: true, user: userId, saved: keys.length });
+          });
+        });
+      }
+
+      function insertNext() {
+        if (index >= keys.length) {
+          finalizeAndCommit();
+          return;
+        }
+
+        const topicKey = keys[index];
+        index += 1;
+
+        const quiz = quizScores[topicKey] || {};
+        const completedAt = typeof completed[topicKey] === "string" ? completed[topicKey] : null;
+        const bestScore = normalizeScore(quiz.best || 0);
+        const lastScore = normalizeScore(quiz.last || 0);
+        const updatedAt =
+          typeof quiz.updatedAt === "string" && quiz.updatedAt.trim().length > 0
+            ? quiz.updatedAt
+            : new Date().toISOString();
+
+        stmt.run(
+          [userId, topicKey, completedAt, bestScore, lastScore, updatedAt],
+          (insertErr) => {
+            if (insertErr) {
+              if (!hadError) {
+                hadError = true;
+                db.run("ROLLBACK", () => {
+                  res.status(500).json({ error: "Failed to save education progress." });
+                });
+              }
+              return;
+            }
+
+            insertNext();
+          }
+        );
+      }
+
+      insertNext();
+    });
   });
 });
 
