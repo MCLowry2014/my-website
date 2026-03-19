@@ -260,6 +260,8 @@ app.delete("/api/watchlist/:id", (req, res) => {
   });
 });
 
+app.get("/healthz", (req, res) => res.status(200).json({ status: "ok" }));
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
