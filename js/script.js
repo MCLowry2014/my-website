@@ -1,5 +1,9 @@
 console.log("Your website is running!");
 
+const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+  ? ""
+  : "https://my-website-1owa.onrender.com";
+
 const periodicElements = [
   { number: 1, symbol: "H", name: "Hydrogen" },
   { number: 2, symbol: "He", name: "Helium" },
@@ -454,7 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadWatchlist(successMessage) {
     try {
-      const response = await fetch("/api/watchlist");
+      const response = await fetch(`${API_BASE}/api/watchlist`);
       if (!response.ok) throw new Error("Unable to fetch watchlist");
       watchlistItems = await response.json();
       renderWatchlist();
@@ -481,7 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        const url = editingItemId ? `/api/watchlist/${editingItemId}` : "/api/watchlist";
+        const url = editingItemId ? `${API_BASE}/api/watchlist/${editingItemId}` : `${API_BASE}/api/watchlist`;
         const method = editingItemId ? "PUT" : "POST";
         const response = await fetch(url, {
           method,
@@ -531,7 +535,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!target.classList.contains("watchlist-delete-btn")) return;
 
       try {
-        const response = await fetch(`/api/watchlist/${id}`, { method: "DELETE" });
+        const response = await fetch(`${API_BASE}/api/watchlist/${id}`, { method: "DELETE" });
         if (!response.ok) {
           const payload = await response.json().catch(() => ({}));
           throw new Error(payload.error || "Could not delete item");
@@ -558,7 +562,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const csvText = await file.text();
         const items = csvTextToItems(csvText);
 
-        const response = await fetch("/api/watchlist/import", {
+        const response = await fetch(`${API_BASE}/api/watchlist/import`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ items })
