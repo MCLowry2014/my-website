@@ -9,7 +9,7 @@
   <div class="tabs-bar-container">
     <nav class="tabs-bar">
       <a href="index.html">Home</a>
-      <a href="index.html#education">Education</a>
+      <a href="education.html">Education</a>
       <a href="projects.html">Projects</a>
       <a href="gaming.html">Gaming</a>
       <a href="videos.html">Videos</a>
@@ -18,5 +18,66 @@
   </div>
   <h1>About</h1>
   <p>Welcome to the About page.</p>
+
+  <section id="watchlist-section" class="watchlist-section">
+    <h2>Movies and TV Watchlist</h2>
+    <p>Add titles to SQLite and view everything stored in your database.</p>
+
+    <form id="watchlist-form" class="watchlist-form">
+      <input id="watch-title" name="title" type="text" placeholder="Title" required />
+      <select id="watch-type" name="type" required>
+        <option value="">Type</option>
+        <option value="Movie">Movie</option>
+        <option value="TV Show">TV Show</option>
+      </select>
+      <input id="watch-year" name="year" type="number" placeholder="Year" min="1900" max="2100" />
+      <input id="watch-status" name="status" type="text" placeholder="Status (Watched, Planned...)" />
+      <button type="submit">Save</button>
+    </form>
+
+    <div class="watchlist-import-row">
+      <input id="watchlist-csv-file" type="file" accept=".csv" aria-label="Upload CSV" />
+      <button id="watchlist-import-btn" type="button">Import CSV</button>
+    </div>
+    <p class="watchlist-help">CSV headers: Title, Type, Year, Status</p>
+
+    <div class="watchlist-toolbar">
+      <input id="watchlist-search" type="search" placeholder="Search titles" aria-label="Search titles" />
+      <select id="watchlist-filter-type" aria-label="Filter by type">
+        <option value="all">All Types</option>
+        <option value="Movie">Movie</option>
+        <option value="TV Show">TV Show</option>
+      </select>
+      <select id="watchlist-sort" aria-label="Sort watchlist">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="title-asc">Title A-Z</option>
+        <option value="title-desc">Title Z-A</option>
+        <option value="year-desc">Year High-Low</option>
+        <option value="year-asc">Year Low-High</option>
+      </select>
+      <button id="watchlist-export-btn" type="button">Export CSV</button>
+    </div>
+
+    <p id="watchlist-message" class="watchlist-message" aria-live="polite"></p>
+
+    <div class="watchlist-table-wrap">
+      <table id="watchlist-table" class="watchlist-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Year</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <button id="watchlist-cancel-edit" class="watchlist-cancel-btn" type="button" hidden>Cancel Edit</button>
+  </section>
+
+  <script src="js/script.js"></script>
 </body>
 </html>

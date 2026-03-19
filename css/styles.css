@@ -233,3 +233,167 @@ body {
 .fact-input-row { margin-top: 8px; display: flex; align-items: center; gap: 8px; }
 .fact-answer { border-radius: 6px; border: 1px solid #4f5eaa; padding: 6px 8px; font-size: 1rem; width: 70px; text-transform: capitalize; }
 
+.watchlist-section {
+  background: #ffffffee;
+  border-radius: 12px;
+  padding: 18px;
+  max-width: 900px;
+  margin: 24px auto 48px auto;
+  box-shadow: 0 2px 10px rgba(57,68,188,0.08);
+}
+
+.watchlist-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 10px 0 12px;
+}
+
+.watchlist-form input,
+.watchlist-form select,
+.watchlist-form button {
+  border-radius: 6px;
+  border: 1px solid #4f5eaa;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+}
+
+.watchlist-form button {
+  background: #3944BC;
+  color: #fff;
+  cursor: pointer;
+}
+
+.watchlist-form button:hover {
+  background: #FFB200;
+  color: #222831;
+}
+
+.watchlist-import-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.watchlist-import-row input,
+.watchlist-import-row button {
+  border-radius: 6px;
+  border: 1px solid #4f5eaa;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+}
+
+.watchlist-import-row button {
+  background: #2e7d32;
+  color: #fff;
+  cursor: pointer;
+}
+
+.watchlist-import-row button:hover {
+  background: #1b5e20;
+}
+
+.watchlist-help {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  color: #223155;
+}
+
+.watchlist-toolbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.watchlist-toolbar input,
+.watchlist-toolbar select,
+.watchlist-toolbar button {
+  border-radius: 6px;
+  border: 1px solid #4f5eaa;
+  padding: 8px 10px;
+  font-size: 0.95rem;
+}
+
+.watchlist-toolbar button {
+  background: #3944BC;
+  color: #fff;
+  cursor: pointer;
+}
+
+.watchlist-toolbar button:hover {
+  background: #FFB200;
+  color: #222831;
+}
+
+.watchlist-message {
+  min-height: 1.2em;
+  font-weight: 600;
+  color: #3944BC;
+}
+
+.watchlist-table-wrap {
+  overflow-x: auto;
+}
+
+.watchlist-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+}
+
+.watchlist-table th,
+.watchlist-table td {
+  border: 1px solid #c6d2f4;
+  padding: 8px;
+  text-align: left;
+}
+
+.watchlist-table th {
+  background: #e7edff;
+}
+
+.watchlist-edit-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: #3944BC;
+  color: #fff;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.watchlist-edit-btn:hover {
+  background: #27338f;
+}
+
+.watchlist-delete-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: #c0392b;
+  color: #fff;
+  cursor: pointer;
+}
+
+.watchlist-delete-btn:hover {
+  background: #8f271d;
+}
+
+.watchlist-cancel-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  background: #6c757d;
+  color: #fff;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.watchlist-cancel-btn:hover {
+  background: #545b62;
+}
+

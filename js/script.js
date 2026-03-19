@@ -183,7 +183,6 @@ function showRandomFactCard() {
     factResult.textContent = "";
   }
   answerInput.value = "";
-  answerInput.focus();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -246,4 +245,362 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (factNextBtn) {
     factNextBtn.addEventListener("click", showRandomFactCard);
-  }});
+  }
+
+  const watchlistSection = document.getElementById("watchlist-section");
+  if (!watchlistSection) {
+    return;
+  }
+
+  const watchlistForm = document.getElementById("watchlist-form");
+  const watchlistMessage = document.getElementById("watchlist-message");
+  const watchlistTableBody = document.querySelector("#watchlist-table tbody");
+  const watchlistCsvFile = document.getElementById("watchlist-csv-file");
+  const watchlistImportBtn = document.getElementById("watchlist-import-btn");
+  const watchlistSearch = document.getElementById("watchlist-search");
+  const watchlistFilterType = document.getElementById("watchlist-filter-type");
+  const watchlistSort = document.getElementById("watchlist-sort");
+  const watchlistExportBtn = document.getElementById("watchlist-export-btn");
+  const watchlistCancelEdit = document.getElementById("watchlist-cancel-edit");
+  const watchTitleInput = document.getElementById("watch-title");
+  const watchTypeInput = document.getElementById("watch-type");
+  const watchYearInput = document.getElementById("watch-year");
+  const watchStatusInput = document.getElementById("watch-status");
+  const watchSubmitButton = watchlistForm?.querySelector("button[type='submit']");
+
+  let watchlistItems = [];
+  let editingItemId = null;
+
+  function setWatchlistMessage(text, isError = false) {
+    if (!watchlistMessage) return;
+    watchlistMessage.textContent = text;
+    watchlistMessage.style.color = isError ? "#c0392b" : "#3944BC";
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function parseCsvLine(line) {
+    const values = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i += 1) {
+      const ch = line[i];
+      const next = line[i + 1];
+
+      if (ch === '"') {
+        if (inQuotes && next === '"') {
+          current += '"';
+          i += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (ch === "," && !inQuotes) {
+        values.push(current.trim());
+        current = "";
+      } else {
+        current += ch;
+      }
+    }
+
+    values.push(current.trim());
+    return values;
+  }
+
+  function csvTextToItems(csvText) {
+    const lines = csvText
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+
+    if (lines.length < 2) {
+      throw new Error("CSV needs a header row and at least one data row.");
+    }
+
+    const header = parseCsvLine(lines[0]).map((h) => h.toLowerCase());
+    const idxTitle = header.indexOf("title");
+    const idxType = header.indexOf("type");
+    const idxYear = header.indexOf("year");
+    const idxStatus = header.indexOf("status");
+
+    if (idxTitle < 0 || idxType < 0) {
+      throw new Error("CSV must include Title and Type columns.");
+    }
+
+    return lines.slice(1).map((line) => {
+      const cells = parseCsvLine(line);
+      return {
+        title: cells[idxTitle] || "",
+        type: cells[idxType] || "",
+        year: idxYear >= 0 ? cells[idxYear] || "" : "",
+        status: idxStatus >= 0 ? cells[idxStatus] || "" : ""
+      };
+    });
+  }
+
+  function getFilteredAndSortedItems() {
+    const searchTerm = watchlistSearch?.value?.trim().toLowerCase() || "";
+    const selectedType = watchlistFilterType?.value || "all";
+    const sortValue = watchlistSort?.value || "newest";
+
+    const filtered = watchlistItems.filter((item) => {
+      const matchesSearch = !searchTerm || item.title.toLowerCase().includes(searchTerm);
+      const matchesType = selectedType === "all" || item.type === selectedType;
+      return matchesSearch && matchesType;
+    });
+
+    filtered.sort((left, right) => {
+      if (sortValue === "oldest") {
+        return left.id - right.id;
+      }
+      if (sortValue === "title-asc") {
+        return left.title.localeCompare(right.title);
+      }
+      if (sortValue === "title-desc") {
+        return right.title.localeCompare(left.title);
+      }
+      if (sortValue === "year-asc") {
+        return (Number(left.year) || 0) - (Number(right.year) || 0);
+      }
+      if (sortValue === "year-desc") {
+        return (Number(right.year) || 0) - (Number(left.year) || 0);
+      }
+      return right.id - left.id;
+    });
+
+    return filtered;
+  }
+
+  function renderWatchlist() {
+    if (!watchlistTableBody) return;
+
+    const visibleItems = getFilteredAndSortedItems();
+
+    if (!visibleItems.length) {
+      watchlistTableBody.innerHTML = "<tr><td colspan='5'>No matching entries.</td></tr>";
+      return;
+    }
+
+    watchlistTableBody.innerHTML = visibleItems
+      .map(
+        (item) => `
+          <tr>
+            <td>${escapeHtml(item.title)}</td>
+            <td>${escapeHtml(item.type)}</td>
+            <td>${escapeHtml(item.year ?? "")}</td>
+            <td>${escapeHtml(item.status ?? "")}</td>
+            <td>
+              <button class="watchlist-edit-btn" data-id="${item.id}">Edit</button>
+              <button class="watchlist-delete-btn" data-id="${item.id}">Delete</button>
+            </td>
+          </tr>
+        `
+      )
+      .join("");
+  }
+
+  function resetWatchlistForm() {
+    editingItemId = null;
+    watchlistForm?.reset();
+    if (watchSubmitButton) {
+      watchSubmitButton.textContent = "Save";
+    }
+    if (watchlistCancelEdit) {
+      watchlistCancelEdit.hidden = true;
+    }
+  }
+
+  function fillWatchlistForm(item) {
+    editingItemId = item.id;
+    if (watchTitleInput) watchTitleInput.value = item.title || "";
+    if (watchTypeInput) watchTypeInput.value = item.type || "";
+    if (watchYearInput) watchYearInput.value = item.year ?? "";
+    if (watchStatusInput) watchStatusInput.value = item.status || "";
+    if (watchSubmitButton) {
+      watchSubmitButton.textContent = "Update";
+    }
+    if (watchlistCancelEdit) {
+      watchlistCancelEdit.hidden = false;
+    }
+  }
+
+  function downloadCsv(items) {
+    const rows = [
+      ["Title", "Type", "Year", "Status"],
+      ...items.map((item) => [item.title || "", item.type || "", item.year ?? "", item.status || ""])
+    ];
+
+    const csv = rows
+      .map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","))
+      .join("\r\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "watchlist-export.csv";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
+  async function loadWatchlist(successMessage) {
+    try {
+      const response = await fetch("/api/watchlist");
+      if (!response.ok) throw new Error("Unable to fetch watchlist");
+      watchlistItems = await response.json();
+      renderWatchlist();
+      setWatchlistMessage(successMessage || `Loaded ${watchlistItems.length} items from SQLite.`);
+    } catch (error) {
+      watchlistItems = [];
+      renderWatchlist();
+      setWatchlistMessage("Could not load watchlist. Start backend with npm start.", true);
+    }
+  }
+
+  if (watchlistForm) {
+    watchlistForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const title = watchTitleInput?.value?.trim() || "";
+      const type = watchTypeInput?.value?.trim() || "";
+      const year = watchYearInput?.value?.trim() || "";
+      const status = watchStatusInput?.value?.trim() || "";
+
+      if (!title || !type) {
+        setWatchlistMessage("Title and type are required.", true);
+        return;
+      }
+
+      try {
+        const url = editingItemId ? `/api/watchlist/${editingItemId}` : "/api/watchlist";
+        const method = editingItemId ? "PUT" : "POST";
+        const response = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, type, year, status })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || "Could not save item");
+        }
+
+        const successMessage = editingItemId
+          ? `Updated "${payload.title}".`
+          : `Saved "${payload.title}" to SQLite.`;
+        resetWatchlistForm();
+        await loadWatchlist(successMessage);
+      } catch (error) {
+        setWatchlistMessage(error.message || "Could not save item.", true);
+      }
+    });
+  }
+
+  if (watchlistCancelEdit) {
+    watchlistCancelEdit.addEventListener("click", () => {
+      resetWatchlistForm();
+      setWatchlistMessage("Edit cancelled.");
+    });
+  }
+
+  if (watchlistTableBody) {
+    watchlistTableBody.addEventListener("click", async (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLButtonElement)) return;
+
+      const id = Number(target.getAttribute("data-id"));
+      if (Number.isNaN(id)) return;
+
+      if (target.classList.contains("watchlist-edit-btn")) {
+        const item = watchlistItems.find((entry) => entry.id === id);
+        if (!item) return;
+        fillWatchlistForm(item);
+        setWatchlistMessage(`Editing "${item.title}".`);
+        return;
+      }
+
+      if (!target.classList.contains("watchlist-delete-btn")) return;
+
+      try {
+        const response = await fetch(`/api/watchlist/${id}`, { method: "DELETE" });
+        if (!response.ok) {
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.error || "Could not delete item");
+        }
+        if (editingItemId === id) {
+          resetWatchlistForm();
+        }
+        await loadWatchlist("Item deleted.");
+      } catch (error) {
+        setWatchlistMessage(error.message || "Could not delete item.", true);
+      }
+    });
+  }
+
+  if (watchlistImportBtn) {
+    watchlistImportBtn.addEventListener("click", async () => {
+      const file = watchlistCsvFile?.files?.[0];
+      if (!file) {
+        setWatchlistMessage("Select a CSV file before importing.", true);
+        return;
+      }
+
+      try {
+        const csvText = await file.text();
+        const items = csvTextToItems(csvText);
+
+        const response = await fetch("/api/watchlist/import", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items })
+        });
+
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(payload.error || "Import failed.");
+        }
+
+        await loadWatchlist(
+          `Import complete: ${payload.inserted} new, ${payload.duplicates} duplicates, ${payload.invalid} invalid.`
+        );
+      } catch (error) {
+        setWatchlistMessage(error.message || "Could not import CSV.", true);
+      }
+    });
+  }
+
+  if (watchlistSearch) {
+    watchlistSearch.addEventListener("input", renderWatchlist);
+  }
+
+  if (watchlistFilterType) {
+    watchlistFilterType.addEventListener("change", renderWatchlist);
+  }
+
+  if (watchlistSort) {
+    watchlistSort.addEventListener("change", renderWatchlist);
+  }
+
+  if (watchlistExportBtn) {
+    watchlistExportBtn.addEventListener("click", () => {
+      const visibleItems = getFilteredAndSortedItems();
+      if (!visibleItems.length) {
+        setWatchlistMessage("Nothing to export with the current filters.", true);
+        return;
+      }
+      downloadCsv(visibleItems);
+      setWatchlistMessage(`Exported ${visibleItems.length} items to CSV.`);
+    });
+  }
+
+  loadWatchlist();
+});

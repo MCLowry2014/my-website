@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Education</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="tabs-bar-container">
+    <nav class="tabs-bar">
+      <a href="index.html">Home</a>
+      <a href="education.html">Education</a>
+      <a href="projects.html">Projects</a>
+      <a href="gaming.html">Gaming</a>
+      <a href="videos.html">Videos</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+
+  <h1>Education</h1>
+  <section id="education" class="education-section">
+    <h2>Education</h2>
+    <div class="education-grid">
+      <article class="education-subject">
+        <h3>Math</h3>
+        <ul>
+          <li>Games</li>
+          <li>Quizzes</li>
+          <li>Practice Sheets</li>
+        </ul>
+      </article>
+      <article class="education-subject">
+        <h3>Science</h3>
+        <ul>
+          <li>Games</li>
+          <li>Experiments</li>
+          <li>Facts & Videos</li>
+        </ul>
+        <p><strong>Periodic Table Puzzle</strong>: Match elements to symbols</p>
+      </article>
+      <article class="education-subject">
+        <h3>History</h3>
+        <ul>
+          <li>Timelines</li>
+          <li>Guess-the-Date Games</li>
+          <li>Biographies</li>
+        </ul>
+      </article>
+      <article class="education-subject">
+        <h3>English / Reading</h3>
+        <ul>
+          <li>Word Games</li>
+          <li>Grammar Challenges</li>
+          <li>Reading Practice</li>
+        </ul>
+      </article>
+      <article class="education-subject">
+        <h3>Coding / Tech</h3>
+        <ul>
+          <li>Logic Games</li>
+          <li>Mini Coding Puzzles</li>
+          <li>Tutorials</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="puzzle-panel">
+      <h3>Periodic Table Puzzle</h3>
+      <p>Select the correct symbol for each element and click "Check Answers".</p>
+      <div id="puzzle-questions" class="puzzle-questions"></div>
+      <button id="puzzle-check" class="puzzle-btn">Check Answers</button>
+      <button id="puzzle-reset" class="puzzle-btn puzzle-reset">Reset</button>
+      <p id="puzzle-result" class="puzzle-result" aria-live="polite"></p>
+    </div>
+
+    <div class="puzzle-panel">
+      <h3>Element Fact Cards</h3>
+      <p id="fact-question" class="fact-question">Loading fact...</p>
+      <div class="fact-input-row">
+        <label for="fact-answer">Element symbol:</label>
+        <input id="fact-answer" class="fact-answer" placeholder="e.g. O" maxlength="2" />
+      </div>
+      <div style="margin-top: 8px;">
+        <button id="fact-check" class="puzzle-btn">Check Fact</button>
+        <button id="fact-next" class="puzzle-btn puzzle-reset">Next Fact</button>
+      </div>
+      <p id="fact-result" class="puzzle-result" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
