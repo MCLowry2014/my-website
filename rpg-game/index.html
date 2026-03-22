@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canvas RPG Starter</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="rpg-shell">
+    <header class="hud-bar">
+      <div class="bar-group">
+        <label>HP</label>
+        <div class="bar"><div id="hp-bar" class="bar-fill hp"></div></div>
+        <span id="hp-text">0 / 0</span>
+      </div>
+      <div class="bar-group">
+        <label>MP</label>
+        <div class="bar"><div id="mp-bar" class="bar-fill mp"></div></div>
+        <span id="mp-text">0 / 0</span>
+      </div>
+      <div class="bar-group">
+        <label>XP</label>
+        <div class="bar"><div id="xp-bar" class="bar-fill xp"></div></div>
+        <span id="xp-text">Lv. 1</span>
+      </div>
+      <div class="hud-actions">
+        <button id="save-btn">Save</button>
+        <button id="load-btn">Load</button>
+      </div>
+    </header>
+
+    <section class="game-layout">
+      <aside class="sidebar sidebar-left">
+        <section class="panel stats">
+          <h2>Stats</h2>
+          <ul id="stats-list"></ul>
+        </section>
+
+        <section class="panel equipment">
+          <h2>Equipment</h2>
+          <div id="equipment-slots" class="equipment-grid"></div>
+        </section>
+
+        <section class="panel quests">
+          <h2>Quests</h2>
+          <div id="quest-list" class="quest-list"></div>
+        </section>
+      </aside>
+
+      <div class="canvas-wrap">
+        <canvas id="game-canvas" width="960" height="640" aria-label="RPG world canvas"></canvas>
+        <div id="dialogue-box" class="panel dialogue hidden"></div>
+        <div id="combat-box" class="panel combat hidden"></div>
+        <div id="shop-box" class="panel shop hidden"></div>
+      </div>
+
+      <aside class="sidebar sidebar-right">
+        <section class="panel inventory">
+          <h2>Inventory</h2>
+          <p class="hint">Drag and drop items between slots and equipment. Click consumables to use.</p>
+          <div id="inventory-grid" class="inventory-grid"></div>
+        </section>
+
+        <section class="panel log">
+          <h2>Log</h2>
+          <div id="event-log" class="event-log"></div>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="help-bar">
+      Move: WASD / Arrows | Interact: E | Open Menu actions from right panels
+    </footer>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
