@@ -1,19 +1,23 @@
-document.getElementById('game-select').addEventListener('change', function(e) {
-  showGame(e.target.value);
-});
 // Game selector logic for Gaming page
-document.getElementById('game-select').addEventListener('change', function(e) {
+document.getElementById("game-select").addEventListener("change", function (e) {
   showGame(e.target.value);
 });
 
 let lastGame = null;
 function showGame(game) {
-  const gameContainer = document.getElementById('game-container');
+  const gameContainer = document.getElementById("game-container");
   // Clean up previous game listeners if needed
-  if (lastGame === '2048') {
+  if (lastGame === "2048") {
     document.removeEventListener('keydown', handle2048Key);
   }
-  if (game === 'memory') {
+  if (lastGame === "tetris" && typeof window.destroyTetris === "function") {
+    window.destroyTetris();
+  }
+  if (lastGame === "runner") {
+    // iframe is removed when innerHTML is replaced below
+  }
+
+  if (game === "memory") {
     gameContainer.innerHTML = `
       <div class="restart-btn-container"><button class="restart-btn" id="restart-memory">Restart</button></div>
       <div class="memory-game"></div>
@@ -25,8 +29,8 @@ function showGame(game) {
     `;
     loadMemoryGame();
     if (window.memoryLeaderboard) window.memoryLeaderboard.renderLeaderboard();
-    document.getElementById('restart-memory').onclick = () => loadMemoryGame();
-  } else if (game === '2048') {
+    document.getElementById("restart-memory").onclick = () => loadMemoryGame();
+  } else if (game === "2048") {
     gameContainer.innerHTML = `
       <div class="restart-btn-container"><button class="restart-btn" id="restart-2048">Restart</button></div>
       <div id="game-2048"></div>
@@ -37,9 +41,38 @@ function showGame(game) {
     `;
     if (window.init2048) window.init2048();
     if (window.leaderboard2048) window.leaderboard2048.renderLeaderboard2048();
-    document.getElementById('restart-2048').onclick = () => {
+    document.getElementById("restart-2048").onclick = () => {
       if (window.init2048) window.init2048();
     };
+  } else if (game === "sudoku") {
+    gameContainer.innerHTML = `
+      <div class="restart-btn-container"><button class="restart-btn" id="new-sudoku">New Puzzle</button></div>
+      <div id="sudoku-game"></div>
+    `;
+    if (window.initSudoku) window.initSudoku("sudoku-game");
+    document.getElementById("new-sudoku").onclick = () => {
+      if (window.initSudoku) window.initSudoku("sudoku-game");
+    };
+  } else if (game === "tetris") {
+    gameContainer.innerHTML = `
+      <div class="restart-btn-container"><button class="restart-btn" id="restart-tetris">Restart</button></div>
+      <div id="tetris-game"></div>
+    `;
+    if (window.initTetris) window.initTetris("tetris-game");
+    document.getElementById("restart-tetris").onclick = () => {
+      if (window.initTetris) window.initTetris("tetris-game");
+    };
+  } else if (game === "runner") {
+    gameContainer.innerHTML = `
+      <div class="runner-embed-wrap">
+        <iframe
+          src="endless-runner/index.html"
+          class="runner-iframe"
+          title="Nature Runner game"
+          allowfullscreen
+        ></iframe>
+      </div>
+    `;
   }
   lastGame = game;
 }

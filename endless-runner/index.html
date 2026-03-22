@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nature Runner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <h1>Nature Runner</h1>
+    <p class="subtitle">Classic 2D side-scrolling endless runner built with pure Canvas + JavaScript.</p>
+
+    <section class="game-wrap" aria-label="Endless runner game container">
+      <canvas id="gameCanvas" width="960" height="540" aria-label="Nature Runner canvas"></canvas>
+
+      <div class="hud" aria-live="polite">
+        <span id="score">Score: 0</span>
+        <span id="highScore">High Score: 0</span>
+      </div>
+
+      <div id="overlay" class="overlay hidden" role="status" aria-live="assertive">
+        <h2>Game Over</h2>
+        <p>You crashed. Press R, Enter, or Space to restart.</p>
+      </div>
+    </section>
+
+    <section class="controls" aria-label="Game controls">
+      <p><strong>Controls:</strong> Space, W, or Up Arrow to jump.</p>
+    </section>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
